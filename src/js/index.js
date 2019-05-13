@@ -1,4 +1,6 @@
 // Global app controller
-import x from './test';
+import num from './test';
 
-console.log(`I  imported this here from ${x} from another file`);
+const x = 23;
+
+console.log(`I  imported this here ${num} from another module called. variable x is ${x}`);

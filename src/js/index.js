@@ -1,22 +1,34 @@
 ////////////////////////////////////
 /////// Controller
-import axios from 'axios';
+import Search from './models/Search';
+/** Global state of the App
+ * -Search Object
+ * -Current recipe object
+ * -Shopping list object
+ * -Liked recipes
+ */
+const state = {};
 
-// URL : https://www.food2fork.com/api/search
-// API KEY Food2Fork - f42946af5e7d8514c9c65074da2c433d
+const controlSearch = async () => {
+  // 1) Get query from the view
+  const query = 'pizza' // TODO
 
-async function getResults(query){
-  const proxy = 'https://crossorigin.me/';
-  const URL = 'https://www.food2fork.com/api/search';
-  const API_KEY = 'f42946af5e7d8514c9c65074da2c433d';
+  if(query){
+    // 2) New search object and add it to state
+    state.search = new Search(query);
+    // 3) Prepare UI for results
 
-  try {
-    const res = await axios(`${URL}?key=${API_KEY}&q=${query}`)
-    const recipes = res.data.recipes;
-    console.log(recipes);
-  } catch(err) {
-    alert(err);
+    // 4) Search for recipes
+    await state.search.getResults();
+
+    // 5) Render results on UI
+    console.log(state.search.result);
   }
 };
 
-getResults('pasta chicken');
+document.querySelector('.search').addEventListener('submit', e => {
+  e.preventDefault();
+  controlSearch();
+});
+
+

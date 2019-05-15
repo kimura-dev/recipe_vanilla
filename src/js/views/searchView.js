@@ -9,6 +9,7 @@ export const clearInput = () => {
 export const clearResults = () => {
   // This will delete all the HTML in the element
   elements.searchResultList.innerHTML = '';
+  elements.searchResultPages.innerHTML = '';
 };
 
 // Private Function

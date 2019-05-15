@@ -55,7 +55,48 @@ export const renderRecipe = recipe => {
 
 };
 
-export const renderResults = recipes => {
-  recipes.forEach(renderRecipe);
+// Type can be 'prev' or 'next'
+const createButton = (page, type) => `
+    <button class="btn-inline results__btn--${type}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
+    <span>Page ${type === 'prev' ? page - 1 : page + 1}</span>
+      <svg class="search__icon">
+          <use href="img/icons.svg#icon-triangle-${type === 'prev' ? 'left' : 'right'}"></use>
+      </svg>
+    </button>
+`;
+
+const renderButtons = (page, numResults, resultsPerPage) => {
+  // always want it to round up. This will be my 3 pages
+  const pages = Math.ceil(numResults / resultsPerPage);
+
+  let button;
+  if(page === 1 && pages > 1){
+    // only button to go to NEXT page
+    button = createButton(page, 'next');
+  } else if (page < pages){
+    // want both buttons PREV & NEXT page
+    button = `
+        ${createButton(page, 'prev')}
+        ${createButton(page, 'next')}
+    `;
+
+  } else if (page === pages && pages > 1){
+    // only button to go to PREV page
+    button = createButton(page, 'prev');
+  }
+
+  elements.searchResultPages.insertAdjacentHTML('afterbegin', button)
+};
+
+export const renderResults = (recipes, page = 1, resultsPerPage = 10) => {
+  // Render results of current page
+  const start = (page - 1) * resultsPerPage;
+  const end = page * resultsPerPage;
+
+  // Using slice seperates the results into increments of 10
+  recipes.slice(start, end).forEach(renderRecipe);
+
+  // Render pagination buttons
+  renderButtons(page, recipes.length, resultsPerPage);
 };
 

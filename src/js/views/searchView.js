@@ -65,7 +65,7 @@ const createButton = (page, type) => `
       </svg>
     </button>
 `;
-
+ 
 const renderButtons = (page, numResults, resultsPerPage) => {
   // always want it to round up. This will be my 3 pages
   const pages = Math.ceil(numResults / resultsPerPage);
